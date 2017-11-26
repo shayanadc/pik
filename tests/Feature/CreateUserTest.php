@@ -7,7 +7,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\User;
 
-class CreateBillTest extends TestCase
+class CreateUserTest extends TestCase
 {
     use DatabaseTransactions;
     /**
@@ -23,5 +23,14 @@ class CreateBillTest extends TestCase
         ]);
         $newUser = User::first();
         $this->assertNotNull($newUser);
+    }
+
+    /**
+     * @test
+     */
+    public function it_find_user_base_array(){
+        $fakeUser = factory(User::class)->create();
+        $findUser = User::findWith(['telegram_id' => $fakeUser->telegram_id]);
+        $this->assertEquals($fakeUser->telegram_id,$findUser->telegram_id);
     }
 }
