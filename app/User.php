@@ -35,6 +35,11 @@ class User extends Authenticatable
     static function entryNew($array){
         return static::Create($array);
     }
+    static function findWith($array){
+        $key = key($array);
+        $value = $array[$key];
+        return static::where($key,$value)->first();
+    }
     public function sum($x,$y){
         return $x + $y;
     }
