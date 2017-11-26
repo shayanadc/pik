@@ -15,7 +15,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'surname',
+        'telegram_id',
+        'telegram_username',
+        'phone_no'
+//        'email',
+//        'password',
     ];
 
     /**
@@ -24,8 +30,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+//        'password', 'remember_token',
     ];
+    static function entryNew($array){
+        return static::Create($array);
+    }
     public function sum($x,$y){
         return $x + $y;
     }
