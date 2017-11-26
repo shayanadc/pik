@@ -40,6 +40,13 @@ class User extends Authenticatable
         $value = $array[$key];
         return static::where($key,$value)->first();
     }
+    static function registerOrFind($array){
+        $exist = static::findWith($array);
+        if($exist){
+            return $exist;
+        }
+        return static::entryNew($array);
+    }
     public function sum($x,$y){
         return $x + $y;
     }
