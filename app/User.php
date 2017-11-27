@@ -32,20 +32,8 @@ class User extends Authenticatable
     protected $hidden = [
 //        'password', 'remember_token',
     ];
-    static function entryNew($array){
-        return static::Create($array);
-    }
-    static function findWith($array){
-        $key = key($array);
-        $value = $array[$key];
-        return static::where($key,$value)->first();
-    }
-    static function registerOrFind($array){
-        $exist = static::findWith($array);
-        if($exist){
-            return $exist;
-        }
-        return static::entryNew($array);
+    static function findOrMakeNew($array){
+        return static::firstOrCreate($array);
     }
     public function sum($x,$y){
         return $x + $y;
