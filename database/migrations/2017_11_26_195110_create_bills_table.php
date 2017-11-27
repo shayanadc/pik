@@ -17,6 +17,7 @@ class CreateBillsTable extends Migration
             $table->increments('id');
             $table->string('description');
             $table->decimal('cost');
+            //todo: user and group should be nullable
             $table->integer('user_id');
             $table->integer('group_id');
             //todo: add relation with group and user

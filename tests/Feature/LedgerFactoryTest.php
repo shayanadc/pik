@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\LedgerFactory;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class LedgerFactoryTest extends TestCase
 {
@@ -28,19 +27,43 @@ class LedgerFactoryTest extends TestCase
 
     }
     /**
-     * @test
+     *
      */
-    public function it_calculates_members_status_in_ledger(){
-        $input = [
+//    public function it_calculates_members_status_in_ledger(){
+//        $input = [
+//            ['creditor' => 'A' , 'owee' => 'B', 'amount' => 10000],
+//            ['creditor' => 'A' , 'owee' => 'B', 'amount' => 40000],
+//            ['creditor' => 'A' , 'owee' => 'C', 'amount' => 20000],
+//        ];
+//        $ledgerFactory = new LedgerFactory();
+//        $output = $ledgerFactory->calcStatus($input);
+//        $this->assertEquals([
+//            ['creditor' => 'A' , 'owee' => 'B', 'amount' => 50000],
+//            ['creditor' => 'A' , 'owee' => 'C', 'amount' => 20000],
+//        ],$output);
+//    }
+    /**
+     * @test
+     * @dataProvider calcProvider
+     */
+    public function it_calculates_members_status_in_ledger_book($arrays,$expected){
+        $ledgerFactory = new LedgerFactory();
+        $calcArray = $ledgerFactory->calcStatus($arrays);
+        $this->assertEquals($expected, $calcArray);
+    }
+    public function calcProvider(){
+        $case1 = [
             ['creditor' => 'A' , 'owee' => 'B', 'amount' => 10000],
             ['creditor' => 'A' , 'owee' => 'B', 'amount' => 40000],
             ['creditor' => 'A' , 'owee' => 'C', 'amount' => 20000],
         ];
-        $ledgerFactory = new LedgerFactory();
-        $output = $ledgerFactory->calcStatus($input);
-        $this->assertEquals([
+        $result1 = [
             ['creditor' => 'A' , 'owee' => 'B', 'amount' => 50000],
             ['creditor' => 'A' , 'owee' => 'C', 'amount' => 20000],
-        ],$output);
+        ];
+        return [
+            [$case1, $result1]
+        ];
+
     }
 }
