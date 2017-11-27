@@ -10,4 +10,7 @@ class Bill extends Model
     static function entryNew($array){
         return static::Create($array);
     }
+    public function group(){
+        return $this->belongsTo(Group::class);
+    }
 }
