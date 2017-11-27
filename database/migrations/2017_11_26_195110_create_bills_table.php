@@ -17,10 +17,11 @@ class CreateBillsTable extends Migration
             $table->increments('id');
             $table->string('description');
             $table->decimal('cost');
-            $table->integer('user_id');
-            $table->integer('group_id');
-            //todo: add relation with group and user
+            $table->integer('user_id')->nullable();
+            $table->integer('group_id')->nullable();
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('group_id')->references('id')->on('groups');
         });
     }
 
