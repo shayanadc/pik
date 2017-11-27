@@ -35,7 +35,4 @@ class User extends Authenticatable
     static function findOrMakeNew($array){
         return static::firstOrCreate($array);
     }
-    public function sum($x,$y){
-        return $x + $y;
-    }
 }

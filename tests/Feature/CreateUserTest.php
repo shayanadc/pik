@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -9,7 +10,7 @@ use App\User;
 
 class CreateUserTest extends TestCase
 {
-    use DatabaseTransactions;
+    use DatabaseMigrations;
     /**
      * A basic test example.
      * @test

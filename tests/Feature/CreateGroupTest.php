@@ -10,7 +10,7 @@ use App\Group;
 
 class CreateGroupTest extends TestCase
 {
-    use DatabaseTransactions;
+    use DatabaseMigrations;
     /**
      * A basic test example.
      * @test
