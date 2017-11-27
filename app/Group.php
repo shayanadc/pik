@@ -12,4 +12,7 @@ class Group extends Model
     {
         return static::create(['name' => $name]);
     }
+    public function bills(){
+       return $this->hasMany(Bill::class);
+    }
 }

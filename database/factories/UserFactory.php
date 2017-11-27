@@ -12,7 +12,19 @@ use Faker\Generator as Faker;
 | model instances for testing / seeding your application's database.
 |
 */
-
+$factory->define(App\Group::class, function (Faker $faker) {
+    return [
+        'name' => $faker->name
+        ];
+});
+$factory->define(App\Bill::class, function (Faker $faker) {
+   return [
+     'description' => 'dinner',
+       'cost' => 1000,
+       'user_id' => factory(\App\User::class)->create()->id,
+       'group_id' => factory(\App\Group::class)->create()->id
+   ];
+});
 $factory->define(App\User::class, function (Faker $faker) {
 //    static $password;
 
