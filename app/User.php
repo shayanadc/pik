@@ -35,4 +35,11 @@ class User extends Authenticatable
     static function findOrMakeNew($array){
         return static::firstOrCreate($array);
     }
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class);
+    }
+    public function bills(){
+        return $this->hasMany(Bill::class);
+    }
 }

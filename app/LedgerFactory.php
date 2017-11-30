@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: shayanadc
  * Date: 11/19/17
- * Time: 10:33 AM
+ * Time: 10:G3 AM
  */
 
 namespace App;
@@ -65,4 +65,10 @@ class LedgerFactory
         $additionArray = array_reduce($sortArray, [$this, 'addition'], []);
         return array_values(array_map([$this, 'reverse'], $additionArray));
     }
+    public function divideAndStore($amount, $members, $params)
+    {
+        $x = $this->divide($amount, $members, $params);
+        return Ledger::storeRow($x['rows']);
+    }
+
 }
