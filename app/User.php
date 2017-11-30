@@ -40,6 +40,12 @@ class User extends Authenticatable
         return $this->belongsToMany(Group::class);
     }
     public function bills(){
-        return $this->hasMany(Bill::class);
+        return $this->hasMany(Bill::class,'owner');
+    }
+    public function creditors(){
+        return $this->hasMany(Ledger::class,'creditor','id');
+    }
+    public function owes(){
+        return $this->hasMany(Ledger::class,'owe','id');
     }
 }

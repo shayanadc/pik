@@ -19,8 +19,8 @@ class LedgerFactoryTest extends TestCase
         $outputArray = $ledgerFactory->divide(60000, ['nietzsche','fruid','shayan'], $params);
         $this->assertEquals([ 'bill_no' => 2,
             'rows' => [
-                ['creditor' => 'shayan', 'owee' => 'nietzsche', 'amount' => 20000],
-                ['creditor' => 'shayan', 'owee' => 'fruid', 'amount' => 20000]
+                ['creditor' => 'shayan', 'owe' => 'nietzsche', 'amount' => 20000],
+                ['creditor' => 'shayan', 'owe' => 'fruid', 'amount' => 20000]
                 ]
         ],
             $outputArray);
@@ -48,7 +48,6 @@ class LedgerFactoryTest extends TestCase
     public function it_calculates_members_status_in_ledger_book($arrays,$expected){
         $ledgerFactory = new LedgerFactory();
         $calcArray = $ledgerFactory->calcStatus($arrays);
-        dd($calcArray);
         $this->assertEquals($expected, $calcArray);
     }
     public function calcProvider(){
