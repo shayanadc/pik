@@ -2,11 +2,15 @@
 
 namespace Tests\Feature;
 
+use App\Ledger;
 use App\LedgerFactory;
+use App\BillLedgerInterActor;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
 class LedgerFactoryTest extends TestCase
 {
+    use DatabaseMigrations;
     /**
      * A basic test example.
      * @test
@@ -24,6 +28,25 @@ class LedgerFactoryTest extends TestCase
                 ]
         ],
             $outputArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_divides_and_store_specific_amount_between_members()
+    {
+        $ledgerFactory = new BillLedgerInterActor();
+        $params = ['bill_no' => 2, 'bill_owner' => 2];
+        $outputArray = $ledgerFactory->divideAndStoreBillInLedger(60000, [4,1,2], $params);
+        $this->assertCount(2,Ledger::all());
+        $this->assertEquals([ 'bill_no' => 2,
+            'rows' => [
+                ['creditor' => 2, 'owe' => 4, 'amount' => 20000],
+                ['creditor' => 2, 'owe' => 1, 'amount' => 20000]
+            ]
+        ],
+            $outputArray);
+
     }
     /**
      *
