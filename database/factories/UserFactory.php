@@ -21,7 +21,7 @@ $factory->define(App\Bill::class, function (Faker $faker) {
    return [
      'description' => 'dinner',
        'cost' => 1000,
-       'user_id' => factory(\App\User::class)->create()->id,
+       'owner' => factory(\App\User::class)->create()->id,
        'group_id' => factory(\App\Group::class)->create()->id
    ];
 });
@@ -34,5 +34,13 @@ $factory->define(App\User::class, function (Faker $faker) {
 //        'email' => $faker->unique()->safeEmail,
 //        'password' => $password ?: $password = bcrypt('secret'),
 //        'remember_token' => str_random(10),
+    ];
+});
+$factory->define(App\Ledger::class, function (Faker $faker) {
+    return [
+        'bill_no' => factory(\App\Bill::class)->create()->id,
+        'creditor' => factory(\App\User::class)->create()->id,
+        'owe' => factory(\App\User::class)->create()->id,
+        'amount' => $faker->randomNumber(4)
     ];
 });

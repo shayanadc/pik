@@ -14,7 +14,10 @@ class Bill extends Model
     public function group(){
         return $this->belongsTo(Group::class);
     }
-    public function user(){
-        return $this->belongsTo(User::class);
+    public function owner(){
+        return $this->belongsTo(User::class,'owner');
+    }
+    public function ledgers(){
+        return $this->hasMany(Ledger::class,'bill_no');
     }
 }

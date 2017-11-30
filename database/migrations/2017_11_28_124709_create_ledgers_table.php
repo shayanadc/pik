@@ -15,6 +15,7 @@ class CreateLedgersTable extends Migration
     {
         Schema::create('ledgers', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('bill_no')->nullable();
             $table->integer('creditor');
             $table->integer('owe');
             $table->decimal('amount');
