@@ -65,10 +65,4 @@ class LedgerFactory
         $additionArray = array_reduce($sortArray, [$this, 'addition'], []);
         return array_values(array_map([$this, 'reverse'], $additionArray));
     }
-    public function divideAndStore($amount, $members, $params)
-    {
-        $x = $this->divide($amount, $members, $params);
-        return Ledger::storeRow($x['rows']);
-    }
-
 }
