@@ -18,7 +18,7 @@ class CreateBillTest extends TestCase
      */
     public function it_test_create_bill()
     {
-        Bill::entryNew([
+        Bill::createNew([
             'owner' => 1,
             'description' => 'dinner',
             'cost' => 1000,

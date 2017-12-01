@@ -22,7 +22,7 @@ class LedgerCreateTest extends TestCase
             ['creditor' =>  1, 'owe' => 2, 'amount' => 142244],
             ['creditor' =>  4, 'owe' => 3, 'amount' => 15262],
         ];
-        Ledger::storeRow($array);
+        Ledger::storeRows($array);
         $this->assertCount(3,Ledger::all());
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class Ledger extends Model
 {
 
-    static function storeRow($array){
+    static function storeRows($array){
        return DB::table('ledgers')->insert($array);
     }
     public function bill(){

@@ -23,13 +23,13 @@ class LedgerFactory
     {
         $sharePerPerson = $amount / count($members);
         $owner = $params['bill_owner'];
-        $owees = array_filter($members, function ($i) use ($owner) {
+        $owes = array_filter($members, function ($i) use ($owner) {
             return $i != $owner;
         });
         $output['bill_no'] = $params['bill_no'];
         $output['rows'] = array_map(function ($owe) use ($owner, $sharePerPerson) {
             return ['creditor' => $owner, 'owe' => $owe, 'amount' => $sharePerPerson];
-        }, $owees);
+        }, $owes);
         return $output;
     }
 
