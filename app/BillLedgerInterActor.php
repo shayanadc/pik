@@ -14,7 +14,7 @@ class BillLedgerInterActor
     private $legendFactory;
     public function __construct()
     {
-$this->legendFactory = new LedgerFactory();
+        $this->legendFactory = new LedgerFactory();
     }
     public function addBillNoToRows($ledger){
         $ledgerRow = $ledger['rows'];
