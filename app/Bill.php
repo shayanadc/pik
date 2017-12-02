@@ -8,7 +8,7 @@ class Bill extends Model
 {
     protected $fillable = ['description', 'cost', 'user_id', 'group_id'];
     //todo: change func
-    static function entryNew($array){
+    static function createNew($array){
         return static::Create($array);
     }
     public function group(){

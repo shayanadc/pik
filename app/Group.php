@@ -8,7 +8,7 @@ class Group extends Model
 {
     protected $fillable = ['name'];
 
-    public static function entryNew($name)
+    public static function createNew($name)
     {
         return static::create(['name' => $name]);
     }

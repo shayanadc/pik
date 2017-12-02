@@ -11,15 +11,23 @@ namespace App;
 
 class BillLedgerInterActor
 {
-    public function divideAndStoreBillInLedger($amount, $members, $params){
-        $new = new LedgerFactory();
-        $ledger = $new->divide($amount,$members,$params);
+    private $legendFactory;
+    public function __construct()
+    {
+$this->legendFactory = new LedgerFactory();
+    }
+    public function addBillNoToRows($ledger){
         $ledgerRow = $ledger['rows'];
         $billNo = $ledger['bill_no'];
-        $rows = array_map(function($item) use ($billNo){
+        return array_map(function($item) use ($billNo){
             return ['creditor' => $item['creditor'], 'owe' => $item['owe'], 'amount' => $item['owe'], 'bill_no' => $billNo];
         },$ledgerRow,[]);
-        Ledger::storeRow($rows);
+    }
+
+    public function divideAndStoreBillInLedger($amount, $members, $params){
+        $ledger = $this->legendFactory->divide($amount,$members,$params);
+        $rows = $this->addBillNoToRows($ledger);
+        Ledger::storeRows($rows);
         return $ledger;
     }
 
