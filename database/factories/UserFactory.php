@@ -19,8 +19,8 @@ $factory->define(App\Group::class, function (Faker $faker) {
 });
 $factory->define(App\Bill::class, function (Faker $faker) {
    return [
-     'description' => 'dinner',
-       'cost' => 1000,
+     'description' => $faker->word,
+       'cost' => $faker->randomNumber(6),
        'owner' => factory(\App\User::class)->create()->id,
        'group_id' => factory(\App\Group::class)->create()->id
    ];

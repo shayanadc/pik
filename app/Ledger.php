@@ -23,4 +23,10 @@ class Ledger extends Model
     public function getDescriptionAttribute(){
         return $this->bill->description;
     }
+    static function scopeUserFilter($query,$user){
+       
+        return $query->where(function($q) use ($user){
+                $q->where('creditor', $user)->orWhere('owe', $user);
+            });
+    }
 }
