@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Bill extends Model
 {
     protected $fillable = ['description', 'cost', 'user_id', 'group_id'];
-    //todo: change func
+
     static function createNew($array){
         return static::Create($array);
     }
@@ -19,5 +19,8 @@ class Bill extends Model
     }
     public function ledgers(){
         return $this->hasMany(Ledger::class,'bill_no');
+    }
+    public function scopeGroupFilter($query,$id){
+        return $query->where('group_id',$id);
     }
 }

@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Bill;
 use App\Group;
 use App\Ledger;
+use App\LedgerBoundary;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
@@ -45,9 +46,9 @@ class LedgerFilterTest extends TestCase
             'creditor' => factory(User::class)->create()->id,
             'owe' => factory(User::class)->create()->id
         ]);
-        $ledgers = Ledger::filterBy($myUser->id,$myGroup->id)->pluck('id')->toArray();
+        $ledgers = LedgerBoundary::filterBy($myUser->id,$myGroup->id)->pluck('id')->toArray();
         $this->assertEquals([$f1->id,$f2->id], $ledgers);
-        $ledgers = Ledger::filterBy($myUser->id)->pluck('id')->toArray();
+        $ledgers = LedgerBoundary::filterBy($myUser->id)->pluck('id')->toArray();
         $this->assertEquals([$f1->id,$f2->id,$f3->id], $ledgers);
     }
 }

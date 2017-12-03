@@ -23,14 +23,10 @@ class Ledger extends Model
     public function getDescriptionAttribute(){
         return $this->bill->description;
     }
-    static function filterBy($userId,$groupId = null){
-        $ledgers = new Ledger();
-        if($groupId != null){
-            $billIds = Bill::where('group_id', $groupId)->get()->pluck('id');
-            $ledgers = Ledger::whereIn('bill_no',$billIds);
-        }
-        return $ledgers->where(function($q) use ($userId){
-                $q->where('creditor', $userId)->orWhere('owe', $userId);
-            })->get();
+    static function scopeUserFilter($query,$user){
+       
+        return $query->where(function($q) use ($user){
+                $q->where('creditor', $user)->orWhere('owe', $user);
+            });
     }
 }
