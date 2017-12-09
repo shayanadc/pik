@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Group;
 use App\User;
+use App\UserGroupBoundary;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -36,6 +38,11 @@ class UserController extends Controller
     public function store(Request $request)
     {
         return User::findOrMakeNew($request->toArray());
+    }
+    public function assignUsersToGroup(Request $request)
+    {
+        UserGroupBoundary::addUsersToGroup($request->input('group_id'),$request->input('users_id'));
+        return Group::with('users')->find($request->input('group_id'));
     }
 
     /**
