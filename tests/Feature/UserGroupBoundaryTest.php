@@ -17,12 +17,15 @@ class UserGroupBoundaryTest extends TestCase
      * @test
      * @return void
      */
+    //Todo : test one user to one or more group
     public function it_adds_users_to_specific_group()
     {
         $user1 = factory(User::class)->create();
         $user2 = factory(User::class)->create();
         $group = factory(Group::class)->create();
+        $this->assertCount(0,$group->users);
         UserGroupBoundary::addUsersToGroup($group->id,[$user2->id,$user1->id]);
+        $group = Group::find($group->id);
         $this->assertCount(2,$group->users);
     }
 }

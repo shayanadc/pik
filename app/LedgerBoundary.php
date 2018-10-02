@@ -12,6 +12,7 @@ namespace App;
 class LedgerBoundary
 {
    static function filterBy($userId,$groupId = null){
+       //Todo: if you are not in this group throw exception
        $ledgers = new Ledger();
        if($groupId != null){
            $billIds = Bill::groupFilter($groupId)->get()->pluck('id');

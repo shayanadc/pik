@@ -11,6 +11,7 @@ class CreateUsersTable extends Migration
      *
      * @return void
      */
+    //Todo: add json field to store meta data
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
@@ -19,8 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('surname')->nullable();
 //            $table->string('email')->unique();
 //            $table->string('password');
-            $table->integer('telegram_id');
-            $table->string('telegram_username')->nullable();
+            $table->string('username');
             $table->string('phone_no')->nullable();
 //            $table->rememberToken();
             $table->timestamps();

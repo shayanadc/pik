@@ -16,15 +16,18 @@ class UserControllTest extends TestCase
      * @test
      * @return void
      */
-    public function it_returns_user_after_find_or_create()
+    //Todo: complete this test
+    public function it_returns_user_after_find()
     {
-        $response = $this->json('POST', 'api/users', ['name' => 'Sally','telegram_id' => 42151]);
+        factory(User::class)->create(['username' => 42151,'name' => 'Sally','surname' => 'Dock']);
+        $response = $this->json('POST', 'api/users', ['name' => 'Sally','username' => 42151]);
 
         $response
             ->assertStatus(200)
             ->assertJson([
-                'telegram_id' => 42151,
-                'name' => 'Sally'
+                'username' => 42151,
+                'name' => 'Sally',
+                'surname' => 'Dock'
             ]);
     }
     /**
@@ -32,8 +35,11 @@ class UserControllTest extends TestCase
      */
     public function it_assign_users_to_specific_group_and_return_group_with_users(){
         $group = factory(Group::class)->create();
-        $users = factory(User::class,3)->create();
+        factory(User::class,3)->create();
+        $group = Group::find($group->id);
+        $this->assertCount(0,$group->users);
         $response = $this->json('POST', 'api/users/group', ['group_id' => $group->id, 'users_id' => [1,2,3]]);
+        $group = Group::find($group->id);
         $this->assertCount(3,$group->users);
         $response
             ->assertStatus(200)

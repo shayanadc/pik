@@ -14,7 +14,8 @@ use Faker\Generator as Faker;
 */
 $factory->define(App\Group::class, function (Faker $faker) {
     return [
-        'name' => $faker->name
+        'name' => $faker->name,
+        'creator_id' => 3
         ];
 });
 $factory->define(App\Bill::class, function (Faker $faker) {
@@ -30,7 +31,7 @@ $factory->define(App\User::class, function (Faker $faker) {
 
     return [
         'name' => $faker->name,
-        'telegram_id' => 12415
+        'username' => 12415
 //        'email' => $faker->unique()->safeEmail,
 //        'password' => $password ?: $password = bcrypt('secret'),
 //        'remember_token' => str_random(10),

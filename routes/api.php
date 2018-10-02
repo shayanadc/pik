@@ -18,4 +18,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::post('users','UserController@store');
 Route::post('users/group','UserController@assignUsersToGroup');
+Route::get('groups/user/{id}','GroupController@getGroupsOfUser');
 Route::post('groups','GroupController@store');

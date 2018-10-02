@@ -37,10 +37,17 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        $user = User::findOrMakeNew($request->toArray());
-        $group = Group::createNew($request->input('group_name'));
-        UserGroupBoundary::addUsersToGroup($group->id,$user->id);
+        $userId = $request->input('creator_id');
+        $user = User::find($userId);
+        $group = Group::createNew($request->input('name'), $userId);
+        UserGroupBoundary::addUsersToGroup($group->id,[$user->id]);
         return $group;
+    }
+
+    public function getGroupsOfUser($userId)
+    {
+        $user = User::findOrFail($userId);
+        return $user->groups;
     }
 
     /**
