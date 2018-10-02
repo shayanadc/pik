@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Bill;
+use App\Group;
 use App\Ledger;
 use App\User;
 use Tests\TestCase;
@@ -42,6 +43,27 @@ class BillControllerTest extends TestCase
             ->assertStatus(200)
             ->assertJson([
                 'rows' => [['amount' => 300],['amount' => 300]]
+            ]);
+    }
+    /**
+     * @test
+     */
+    public function it_calc_owe_in_ledger_for_user_by_group(){
+        $member1 = factory(User::class)->create();
+        $member2 = factory(User::class)->create();
+        $owner = factory(User::class)->create();
+        $group = factory(Group::class)->create();
+        $bill1 = factory(Bill::class)->create(['owner' => $owner->id, 'cost' => 3000, 'description' => 'friday dinner', 'group_id' => $group->id]);
+        $bill2 = factory(Bill::class)->create(['owner' => $owner->id, 'cost' => 9000, 'description' => 'friday breakfast', 'group_id' => $group->id]);
+        factory(Ledger::class)->create(['bill_no' => $bill1->id, 'owe' => $owner->id, 'creditor' => $member1, 'amount' => 1000]);
+        factory(Ledger::class)->create(['bill_no' => $bill1->id, 'owe' => $owner->id, 'creditor' => $member2, 'amount' => 1000]);
+        factory(Ledger::class)->create(['bill_no' => $bill2->id, 'owe' => $owner->id, 'creditor' => $member1, 'amount' => 3000]);
+        factory(Ledger::class)->create(['bill_no' => $bill2->id, 'owe' => $owner->id, 'creditor' => $member2, 'amount' => 3000]);
+        $response = $this->json('GET', 'api/ledgers?user=' . $member1->id .'&group=' . $group->id);
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                ['amount' => 1000],['amount' => 3000]
             ]);
     }
 }

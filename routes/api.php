@@ -20,5 +20,6 @@ Route::post('users','UserController@store');
 Route::post('users/group','UserController@assignUsersToGroup');
 Route::get('groups/user/{id}','GroupController@getGroupsOfUser');
 Route::post('groups','GroupController@store');
-Route::post('bills/','BillController@store');
-Route::post('ledgers/','LedgerController@store');
+Route::post('bills','BillController@store');
+Route::post('ledgers','LedgerController@store');
+Route::get('ledgers','LedgerController@index');

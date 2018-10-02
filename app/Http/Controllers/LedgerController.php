@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Bill;
 use App\BillLedgerInterActor;
+use App\LedgerBoundary;
 use App\LedgerFactory;
 use Illuminate\Http\Request;
 
@@ -14,9 +15,10 @@ class LedgerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $ledeger = new LedgerBoundary();
+        return $ledeger->filterBy($request->get('user'),$request->get('group'));
     }
 
     /**
