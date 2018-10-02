@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Group extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'creator_id'];
 
-    public static function createNew($name)
+    public static function createNew($name, $creatorId)
     {
-        return static::create(['name' => $name]);
+        return static::create(['name' => $name,'creator_id' => $creatorId]);
     }
     public function bills(){
        return $this->hasMany(Bill::class);

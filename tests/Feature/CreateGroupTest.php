@@ -17,9 +17,9 @@ class CreateGroupTest extends TestCase
      * @return void
      */
 
-    public function it_tests_create_new_group(){
+    public function it_test_creates_new_group(){
         $groupName = '15-9-26';
-        $newGroup = Group::createNew($groupName);
+        Group::createNew($groupName,4);
         $entry = Group::first();
         $this->assertNotNull($entry);
     }

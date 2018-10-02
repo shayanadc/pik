@@ -39,6 +39,7 @@ class UserController extends Controller
     {
         return User::findOrMakeNew($request->toArray());
     }
+    //Todo : move to groupController
     public function assignUsersToGroup(Request $request)
     {
         UserGroupBoundary::addUsersToGroup($request->input('group_id'),$request->input('users_id'));

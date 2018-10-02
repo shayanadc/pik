@@ -43,7 +43,7 @@ class UserMToNGroupTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_users_of_an_group()
+    public function it_returns_users_of_a_group()
     {
         $this->fixtureSetup();
 
