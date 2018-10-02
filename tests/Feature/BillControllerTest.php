@@ -19,7 +19,23 @@ class BillControllerTest extends TestCase
     {
         $response = $this->json('POST', 'api/bills', ['description' => 'for dinner', 'cost' => 183]);
         $bill = Bill::first();
-        $this->assertEquals($bill->cost,183);
+        $this->assertEquals($bill->cost, 183);
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'description' => 'for dinner'
+            ]);
+    }
+    /**
+     * A basic test example.
+     * @test
+     * @return void
+     */
+    public function it_creates_ledger()
+    {
+        $members = [ 0=> 123, 1=> 434, 2 => 2567];
+        factory(Bill::class)->create(['owner_id' => $members[0], 'cost' => 9000, 'description' => 'for dinner']);
+        $response = $this->json('POST', 'api/ledgers', ['description' => 'for dinner', 'cost' => 183]);
         $response
             ->assertStatus(200)
             ->assertJson([

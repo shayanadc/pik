@@ -47,9 +47,7 @@ class LedgerFactoryTest extends TestCase
 //            ]
 //        ],
 //            $outputArray);
-
     }
-
     /**
      * @test
      * @dataProvider calcProvider
