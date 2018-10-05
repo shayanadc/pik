@@ -18,7 +18,12 @@ class LedgerController extends Controller
     public function index(Request $request)
     {
         $ledeger = new LedgerBoundary();
-        return $ledeger->filterBy($request->get('user'),$request->get('group'));
+        $res = $ledeger->filterBy($request->get('user'),$request->get('group'),$request->get('friend'));
+        if($request->has('calc')){
+            $calc = new  LedgerFactory();
+            return $calc->calcStatus($res->toArray());
+        }
+        return $res;
     }
 
     /**

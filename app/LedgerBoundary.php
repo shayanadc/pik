@@ -11,13 +11,18 @@ namespace App;
 
 class LedgerBoundary
 {
-   static function filterBy($userId,$groupId = null){
+   static function filterBy($userId,$groupId = null, $between = null){
        //Todo: if you are not in this group throw exception
        $ledgers = new Ledger();
-       if($groupId != null){
-           $billIds = Bill::groupFilter($groupId)->get()->pluck('id');
-           $ledgers = Ledger::whereIn('bill_no', $billIds);
-       }
-       return $ledgers->userFilter($userId)->get();
+        $fLedger = $ledgers->userFilter($userId);
+        if($groupId != null){
+            $billIds = Bill::groupFilter($groupId)->get()->pluck('id');
+            $fLedger = $fLedger->whereIn('bill_no', $billIds);
+            if($between != null){
+                $fLedger = $fLedger->userFilter($between);
+            }
+            return $fLedger->get();
+        }
+        return $fLedger->get();
    }
 }

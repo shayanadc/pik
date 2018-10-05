@@ -14,41 +14,40 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class LedgerFilterTest extends TestCase
 {
     use DatabaseMigrations;
+
     /**
-     * A basic test example.
      * @test
-     * @return void
      */
-    public function testLedgerRequestFilter()
+    public function testLedgerRequestFilterBetween2people()
     {
         $myUser = factory(User::class)->create();
+        $myFriend = factory(User::class)->create();
         $myGroup = factory(Group::class)->create();
         $group2 = factory(Group::class)->create();
-        $myBill = factory(Bill::class)->create(['group_id' => $myGroup->id]);
+        $bill1 = factory(Bill::class)->create(['group_id' => $myGroup->id]);
         $bill2 = factory(Bill::class)->create(['group_id' => $group2->id]);
         $f1 = factory(Ledger::class)->create([
-            'bill_no' =>  $myBill->id,
+            'bill_no' => $bill1->id,
+            'creditor' => $myUser->id,
+            'owe' => $myFriend->id
+        ]);
+        $f2 = factory(Ledger::class)->create([
+            'bill_no' => $bill1->id,
+            'owe' => $myUser->id,
+            'creditor' => $myFriend->id
+        ]);
+        $f3 = factory(Ledger::class)->create([
+            'bill_no' => $bill2->id,
+            'owe' => $myUser->id,
+            'creditor' => $myFriend->id
+        ]);
+        factory(Ledger::class)->create([
+            'bill_no' => $bill1->id,
             'creditor' => $myUser->id,
             'owe' => factory(User::class)->create()->id
         ]);
-        $f2 = factory(Ledger::class)->create([
-            'bill_no' =>  $myBill->id,
-            'owe' => $myUser->id,
-            'creditor' => factory(User::class)->create()->id
-        ]);
-        $f3 = factory(Ledger::class)->create([
-            'bill_no' =>  $bill2->id,
-            'owe' => $myUser->id,
-            'creditor' => factory(User::class)->create()->id
-        ]);
-        factory(Ledger::class)->create([
-            'bill_no' =>  $myBill->id,
-            'creditor' => factory(User::class)->create()->id,
-            'owe' => factory(User::class)->create()->id
-        ]);
-        $ledgers = LedgerBoundary::filterBy($myUser->id,$myGroup->id)->pluck('id')->toArray();
-        $this->assertEquals([$f1->id,$f2->id], $ledgers);
-        $ledgers = LedgerBoundary::filterBy($myUser->id)->pluck('id')->toArray();
-        $this->assertEquals([$f1->id,$f2->id,$f3->id], $ledgers);
+        $this->assertCount(4,LedgerBoundary::filterBy($myUser->id));
+        $this->assertCount(3,LedgerBoundary::filterBy($myUser->id,$myGroup->id));
+        $this->assertCount(2,LedgerBoundary::filterBy($myUser->id,$myGroup->id,$myFriend->id));
     }
 }
