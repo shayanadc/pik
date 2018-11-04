@@ -17,8 +17,8 @@ class CreateBillsTable extends Migration
             $table->increments('id');
             $table->string('description');
             $table->decimal('cost');
-            $table->integer('owner')->nullable();
-            $table->integer('group_id')->nullable();
+            $table->integer('owner')->nullable()->unsigned();
+            $table->integer('group_id')->nullable()->unsigned();
             $table->timestamps();
             $table->foreign('owner')->references('id')->on('users');
             $table->foreign('group_id')->references('id')->on('groups');

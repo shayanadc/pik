@@ -20,7 +20,7 @@ class BillLedgerInterActor
         $ledgerRow = $ledger['rows'];
         $billNo = $ledger['bill_no'];
         return array_map(function($item) use ($billNo){
-            return ['creditor' => $item['creditor'], 'owe' => $item['owe'], 'amount' => $item['owe'], 'bill_no' => $billNo];
+            return ['creditor' => $item['creditor'], 'owe' => $item['owe'], 'amount' => $item['amount'], 'bill_no' => $billNo];
         },$ledgerRow,[]);
     }
 

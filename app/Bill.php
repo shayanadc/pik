@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bill extends Model
 {
-    protected $fillable = ['description', 'cost', 'user_id', 'group_id'];
+    protected $fillable = ['description', 'cost', 'user_id', 'group_id','owner'];
 
     static function createNew($array){
         return static::Create($array);

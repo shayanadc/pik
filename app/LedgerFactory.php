@@ -58,11 +58,30 @@ class LedgerFactory
             return $item;
         }
     }
+    public function hasAmount($item)
+    {
+        return $item['amount'] == 0 ?
+            null : $item;
+    }
+    public function getLedgerStatus($array){
+
+       $calc = $this->calcStatus($array);
+       $owes = [];
+       $creditor = [];
+       foreach ($calc as $row){
+           $owes[] = $row['owe'];
+           $creditor[] = $row['creditor'];
+       }
+       return ['owe' => $owes,'creditor' => $creditor];
+    }
 
     public function calcStatus($arrays)
     {
         $sortArray = array_map([$this, 'sort'], $arrays);
         $additionArray = array_reduce($sortArray, [$this, 'addition'], []);
-        return array_values(array_map([$this, 'reverse'], $additionArray));
+        $calc = array_values(array_map([$this, 'reverse'], $additionArray));
+//        return array_values(array_reduce([$this, 'hasAmount'], $calc));
+        return  array_values(array_map([$this, 'hasAmount'], $calc));
+
     }
 }

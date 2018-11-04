@@ -19,6 +19,7 @@ class User extends Authenticatable
         'name',
         'surname',
         'username',
+        'telegram_username',
         'phone_no'
 //        'email',
 //        'password',
@@ -32,8 +33,14 @@ class User extends Authenticatable
     protected $hidden = [
 //        'password', 'remember_token',
     ];
-    static function findOrMakeNew($array){
-        return static::firstOrCreate($array);
+    //Todo: just create with username or update find item
+    static function findOrMakeNewByUsername($array){
+        $user = static::where('username', $array['username'])->first();
+        if(!$user){
+            $user = static::firstOrCreate($array);
+        }
+        return $user;
+
     }
     public function groups()
     {

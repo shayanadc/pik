@@ -37,7 +37,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        return User::findOrMakeNew($request->toArray());
+        return User::findOrMakeNewByUsername($request->toArray());
     }
     //Todo : move to groupController
     public function assignUsersToGroup(Request $request)

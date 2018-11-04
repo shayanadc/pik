@@ -49,7 +49,24 @@ class LedgerFactoryTest extends TestCase
 //            $outputArray);
 
     }
+    /**
+     * @test
+     */
+    public function it_returns_list_of_your_owe_of_specific(){
+        $case1 = [
+            ['creditor' => 'A', 'owe' => 'B', 'amount' => 10000],
+            ['creditor' => 'A', 'owe' => 'B', 'amount' => 40000],
 
+            ['creditor' => 'F', 'owe' => 'E', 'amount' => 20000],
+
+            ['creditor' => 'D', 'owe' => 'C', 'amount' => 20000],
+            ['creditor' => 'C', 'owe' => 'D', 'amount' => 10000]
+        ];
+        $ledgerFactory = new LedgerFactory();
+        $calcArray = $ledgerFactory->getLedgerStatus($case1);
+        $expected = ['creditor' => ['A','F','D'], 'owe' => ['B','E','C']];
+        $this->assertEquals($expected, $calcArray);
+    }
     /**
      * @test
      * @dataProvider calcProvider

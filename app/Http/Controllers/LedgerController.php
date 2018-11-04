@@ -23,6 +23,10 @@ class LedgerController extends Controller
             $calc = new  LedgerFactory();
             return $calc->calcStatus($res->toArray());
         }
+        if ($request->has('ledger')){
+            $calc = new  LedgerFactory();
+            return $calc->getLedgerStatus($res->toArray());
+        }
         return $res;
     }
 

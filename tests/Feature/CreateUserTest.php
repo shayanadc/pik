@@ -18,7 +18,7 @@ class CreateUserTest extends TestCase
      */
     public function tests_if_user_is_entry()
     {
-         User::findOrMakeNew([
+         User::findOrMakeNewByUsername([
             'name' => 'shayanadc',
             'username' => 11523526
         ]);
@@ -31,7 +31,7 @@ class CreateUserTest extends TestCase
      */
     public function it_find_user_base_array(){
         $fakeUser = factory(User::class)->create();
-        $findUser = User::findOrMakeNew(['username' => $fakeUser->username,'name' => $fakeUser->name]);
-        $this->assertEquals($fakeUser->telegram_id,$findUser->telegram_id);
+        $findUser = User::findOrMakeNewByUsername(['username' => $fakeUser->username, 'name' => 'AJO']);
+        $this->assertEquals($fakeUser->id,$findUser->id);
     }
 }

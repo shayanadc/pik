@@ -11,7 +11,7 @@ namespace App;
 
 class LedgerBoundary
 {
-   static function filterBy($userId,$groupId = null, $between = null){
+   static function filterBy($userId, $groupId = null, $between = null){
        //Todo: if you are not in this group throw exception
        $ledgers = new Ledger();
         $fLedger = $ledgers->userFilter($userId);
