@@ -1,53 +1,72 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+# Laravel applications with Docker
+This repo contains a Laravel installation setup to use Docker to create a development environment. This repo can be used as a starting point for developing Laravel apps with Docker.
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+You can check this medium [post](https://medium.com/@mrfoh/developing-laravel-applications-with-docker-7324c0a0789a) out for more information.
 
-## About Laravel
+This setup contains;
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+ - PHP-FPM (PHP 7)
+ - Nginx web server
+ - MySQL database
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Run
+Make sure your have composer and [Docker](https://docs.docker.com/) installed
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
+Clone the repo
 
-## Learning Laravel
+`git clone https://github.com/shayanadc/pik.git`
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+Change directory
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+`cd pik`
+  
+Install dependencies
 
-## Laravel Sponsors
+`docker run --rm -v $(pwd):/app composer/composer install`
+    
+Build and run the Docker containers
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](http://patreon.com/taylorotwell):
+`docker-compose up -d`
 
-- **[Vehikl](http://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Styde](https://styde.net)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
+builds the containers to outputs their logs to the console.
 
-## Contributing
+You should be able to visit your app at http://localhost:8008
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+To stop the containers run `docker-compose kill`, and to remove them run `docker-compose rm`
 
-## Security Vulnerabilities
+## Final steps, prepare the Laravel Application.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+We first need to copy the `.env.example` file into our own `.env` file. This file will not be checked into version control & we'll have separate ones for development & production. For now, just copy `.env.example -> .env`
 
-## License
+## Application key & optimize
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+Next we’ll need to set the application key & run the optimize command. Both of these are handled by artisan, but because we have PHP and the entire Laravel app running inside of a container, we can’t just run php artisan key:generate on our local machine like you normally would— we need to be issuing these commands directly into the container instead.
+
+Luckily docker-compose has a really nice abstraction for handling this, the two commands needed would look like:
+
+```
+docker-compose exec app php artisan key:generate
+docker-compose exec app php artisan optimize
+```
+
+Some other commands you’ll be running often in a Laravel project:
+
+```
+docker-compose exec app php artisan migrate
+```
+
+Once you've executed the two command mentioned before (artisan key:generate & artisan optimize) the application will now be ready to use, go ahead and hit http://0.0.0.0:8008 in your browser and you’ll presented with this lovely screen.
+
+## Errors
+
+If you faced this error:
+
+```
+The stream or file "/var/www/storage/logs/laravel.log" could not be opened: failed to open stream: Permission denied
+```
+
+just run this command:
+
+```
+docker-compose exec app chown -R 33 ./*
+```
