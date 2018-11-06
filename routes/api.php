@@ -19,7 +19,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('users','UserController@store');
 Route::post('users/group','UserController@assignUsersToGroup');
 Route::get('groups/user/{id}','GroupController@getGroupsOfUser');
+Route::get('groups/{id}','GroupController@show');
 Route::post('groups','GroupController@store');
 Route::post('bills','BillController@store');
 Route::post('ledgers','LedgerController@store');
+Route::put('ledgers/{id}','LedgerController@update');
 Route::get('ledgers','LedgerController@index');

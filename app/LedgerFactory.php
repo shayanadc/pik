@@ -60,8 +60,9 @@ class LedgerFactory
     }
     public function hasAmount($item)
     {
-        return $item['amount'] == 0 ?
-            null : $item;
+        if($item['amount'] != 0) {
+            return $item;
+        }
     }
     public function getLedgerStatus($array){
 
@@ -80,8 +81,13 @@ class LedgerFactory
         $sortArray = array_map([$this, 'sort'], $arrays);
         $additionArray = array_reduce($sortArray, [$this, 'addition'], []);
         $calc = array_values(array_map([$this, 'reverse'], $additionArray));
-//        return array_values(array_reduce([$this, 'hasAmount'], $calc));
-        return  array_values(array_map([$this, 'hasAmount'], $calc));
+        $hasAmount = array_values(array_map([$this, 'hasAmount'], $calc));
+        foreach ($hasAmount as $item){
+            if(!$item){
+                return [];
+            }
+        }
+        return $hasAmount;
 
     }
 }

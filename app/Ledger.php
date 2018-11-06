@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\DB;
 
 class Ledger extends Model
 {
+    protected $fillable = ['settle'];
 
+    protected $casts = ['settle' => 'boolean'];
     static function storeRows($array){
        return DB::table('ledgers')->insert($array);
     }
@@ -26,7 +28,7 @@ class Ledger extends Model
     static function scopeUserFilter($query,$user){
        
         return $query->where(function($q) use ($user){
-                $q->where('creditor', $user)->orWhere('owe', $user);
+            $q->whereRaw('creditor = ? or owe = ?', [$user,$user]);
             });
     }
 }

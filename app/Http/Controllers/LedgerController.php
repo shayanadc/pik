@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Bill;
 use App\BillLedgerInterActor;
+use App\Ledger;
 use App\LedgerBoundary;
 use App\LedgerFactory;
+use App\User;
 use Illuminate\Http\Request;
 
 class LedgerController extends Controller
@@ -17,19 +19,32 @@ class LedgerController extends Controller
      */
     public function index(Request $request)
     {
-        $ledeger = new LedgerBoundary();
-        $res = $ledeger->filterBy($request->get('user'),$request->get('group'),$request->get('friend'));
+        $lB = new LedgerBoundary();
+        $ledger = $lB->filterBy($request->get('user'),$request->get('group'),$request->get('friend'));
         if($request->has('calc')){
             $calc = new  LedgerFactory();
-            return $calc->calcStatus($res->toArray());
+            return $calc->calcStatus($ledger->toArray());
         }
         if ($request->has('ledger')){
             $calc = new  LedgerFactory();
-            return $calc->getLedgerStatus($res->toArray());
+            $ledger =  $calc->getLedgerStatus($ledger->toArray());
+            if($request->has('user')){
+                $newList = [];
+                foreach ($ledger['owe'] as $k => $value){
+                    if($value  != $request->input('user')){
+                        $newList['owe'][] = User::find($value)->toArray();
+                    }
+                }
+                foreach ($ledger['creditor'] as $k => $value){
+                    if($value  != $request->input('user')){
+                        $newList['creditor'][] = User::find($value)->toArray();
+                    }
+                }
+                $ledger = $newList;
+            }
         }
-        return $res;
+        return $ledger;
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -86,7 +101,9 @@ class LedgerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $ledger = Ledger::find($id);
+        $ledger->update(['settle' => $request->input('settle')]);
+        return $ledger;
     }
 
     /**

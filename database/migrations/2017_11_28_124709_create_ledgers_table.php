@@ -18,7 +18,8 @@ class CreateLedgersTable extends Migration
             $table->integer('bill_no')->nullable();
             $table->integer('creditor');
             $table->integer('owe');
-            $table->decimal('amount');
+            $table->decimal('amount',10,2)->unsigned();
+            $table->boolean('settle')->default(false);
             $table->timestamps();
         });
     }

@@ -46,4 +46,21 @@ class GroupControllerTest extends TestCase
             ]
             ]);
     }
+    /**
+     * @test
+     *
+     */
+    public function it_returns_user_of_group(){
+        $user = factory(User::class)->create();
+        $group = factory(Group::class)->create();
+        factory(Group::class,3)->create();
+        $group->users()->sync([$user->id]);
+        $response = $this->json('GET', 'api/groups/'. $group->id );
+        $group = Group::with('users')->find($group->id);
+        $response
+            ->assertStatus(200)
+            ->assertJson(
+                $group->toArray()
+            );
+    }
 }
